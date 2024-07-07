@@ -3,6 +3,7 @@ Contains some useful plotting functions.
 """
 import numpy as np
 from termcolor import cprint
+import matplotlib as mpl
 from matplotlib.colors import hsv_to_rgb
 from warnings import warn
 
@@ -148,3 +149,19 @@ def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=10
         cprint("Couldn't plot!", "red")
         print(ex)
         return None
+
+
+def setup_generic_plots(fontsize=18):
+    font = {'family' : 'serif',
+            'serif'  : ['Computer Modern Roman'],
+            # 'weight' : 'bold',
+            'size'   : fontsize}
+
+    mpl.rc('font', **font)
+    mpl.rc('text', usetex=True)
+    mpl.rc("text.latex", preamble=r"\usepackage{amsmath}")
+    mpl.rc('savefig', dpi=300)
+    mpl.rc('figure', dpi=100)
+    cprint("LaTeX set up for generic single-page style, CM font.", "yellow", attrs=["bold"])
+    cprint(f"Font size {fontsize} gives 9pt at scale = {9.0/fontsize}", "yellow", attrs=["bold"])
+

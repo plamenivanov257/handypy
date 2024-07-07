@@ -1,4 +1,5 @@
 """
-Import things that are just functions.
+Import things
 """
-from .cli_input import cli_input
+from .cli_input import *
+from .climenu import *
