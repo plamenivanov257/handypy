@@ -1,0 +1,15 @@
+[project]
+name = "HandyPy"
+version = "0.0"
+description = "A collection of useful Python scripts."
+authors = []
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
