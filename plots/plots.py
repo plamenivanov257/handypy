@@ -165,6 +165,10 @@ def setup_generic_plots(fontsize=18):
             # 'weight' : 'bold',
             'size'   : fontsize}
 
+    mpl.rcParams["figure.titlesize"] = fontsize
+    mpl.rcParams["axes.titlesize"] = fontsize
+    mpl.rcParams["figure.labelsize"] = fontsize
+    mpl.rcParams["axes.labelsize"] = fontsize
     mpl.rc('font', **font)
     mpl.rc('text', usetex=True)
     mpl.rc("text.latex", preamble=r"\usepackage{amsmath}")
