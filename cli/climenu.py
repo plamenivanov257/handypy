@@ -2,6 +2,12 @@
 Defines the CLIMenu class which is used for making user-friendly CLI scripts.
 """
 from termcolor import cprint
+try:
+    from matplotlib import pyplot as plt
+    pyplot_imported = True
+except ImportError:
+    cprint("Could not import matplotlib.pyplot!", "red")
+    pyplot_imported = False
 
 
 class CLIMenu:
@@ -30,6 +36,8 @@ class CLIMenu:
                 self.actions_fns[choice]()
             except KeyboardInterrupt:
                 cprint("\nCaught a KeyboardInterrupt, returning to menu...\n", "red")
+                if pyplot_imported:
+                    plt.close("all")
 
     def add_option(self, action : str, action_fn):
         """
