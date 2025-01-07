@@ -156,28 +156,6 @@ def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=10
         return None
 
 
-def setup_generic_plots(fontsize=18):
-    """
-    Sets up matplotlib for LaTeX-enabled plots.
-    """
-    font = {'family' : 'serif',
-            'serif'  : ['Computer Modern Roman'],
-            # 'weight' : 'bold',
-            'size'   : fontsize}
-
-    mpl.rcParams["figure.titlesize"] = fontsize
-    mpl.rcParams["axes.titlesize"] = fontsize
-    mpl.rcParams["figure.labelsize"] = fontsize
-    mpl.rcParams["axes.labelsize"] = fontsize
-    mpl.rc('font', **font)
-    mpl.rc('text', usetex=True)
-    mpl.rc("text.latex", preamble=r"\usepackage{amsmath}")
-    mpl.rc('savefig', dpi=300)
-    mpl.rc('figure', dpi=100)
-    cprint("LaTeX set up for generic single-page style, CM font.", "yellow", attrs=["bold"])
-    cprint(f"Font size {fontsize} gives 9pt at scale = {9.0/fontsize}", "yellow", attrs=["bold"])
-
-
 def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2.5, yoffset=0.5):
     """
     Used for subplot annotation
