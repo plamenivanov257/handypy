@@ -19,7 +19,13 @@ def get_pgf_pdf_location():
         return os.environ[PGF_PDF_LOCATION]
 
     # otherwise, return generic file in home
-    return f"{os.environ["HOME"]}/temp.pdf"
+    if os.name == "posix":
+        return f"{os.environ['HOME']}/temp.pdf"
+
+    if os.name == "nt":
+        return f"{os.environ['HOMEDRIVE']}{os.environ['HOMEPATH']}\\temp.pdf"
+
+    raise Exception("No clue where to save temp.pdf!")
 
 
 def save_pdf():
