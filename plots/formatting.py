@@ -1,8 +1,31 @@
 """
 Helps setup matplotlib for pretty plots.
 """
+import os
 from termcolor import cprint
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+PGF_PDF_LOCATION = "PGF_PDF_LOCATION"
+
+
+def get_pgf_pdf_location():
+    """
+    When using pgf, we can save to a pdf somewhere
+    to see what the pgf actually contains.
+    """
+    if PGF_PDF_LOCATION in os.environ:
+        return os.environ[PGF_PDF_LOCATION]
+
+    # otherwise, return generic file in home
+    return f"{os.environ["HOME"]}/temp.pdf"
+
+
+def save_pdf():
+    """
+    Saves a debug pdf when using pgf.
+    """
+    plt.savefig(get_pgf_pdf_location())
 
 
 def setup_generic_plots(fontsize=18, dpi=300):
