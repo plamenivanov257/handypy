@@ -2,6 +2,7 @@
 Helps setup matplotlib for pretty plots.
 """
 import os
+import re
 from termcolor import cprint
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -89,6 +90,32 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, fig
     cprint(f"Font size is {fontsize}", "yellow", attrs=["bold"])
 
     return plt.figure(figsize=figsize, layout=layout)
+
+
+def save_pgf(filename, clean_fontsize=True):
+    """
+    Saves a pgf and optionally clean fontsize calls inside it.
+    """
+    plt.savefig(filename)
+    cprint(f"Saved {filename}.", "yellow")
+
+    if clean_fontsize:
+        clean_pgf_fontsize(filename)
+
+
+def clean_pgf_fontsize(filename):
+    """
+    Removes all \fontsize{}{} calls inside a pgf file.
+    """
+    with open(filename, encoding="utf-8") as file:
+        filestr = file.read()
+
+    filestr = re.sub(r"\\fontsize\{([+-]?\d*\.?\d*)\}\{([+-]?\d*\.?\d*)\}", "", filestr)
+
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write(filestr)
+
+    cprint(f"Cleaned {filename}.", "yellow", attrs=["bold"])
 
 
 def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2.5, yoffset=0.5):
