@@ -57,7 +57,7 @@ def setup_generic_plots(fontsize=18, dpi=300):
     cprint(f"Font size {fontsize} gives 9pt at scale = {9.0/fontsize}", "yellow", attrs=["bold"])
 
 
-def setup_jpp_pgf_plots(fontsize=10, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(4.72, 3.15), layout="constrained"):
+def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(5, 3), layout=None):
     """
     Sets up matplotlib for JPP plots
     using the pgf backend.
