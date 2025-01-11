@@ -59,7 +59,7 @@ def setup_generic_plots(fontsize=18):
 
 
 
-def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(5, 3), layout=None):
+def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(5, 3), layout=None, times_font=True):
     """
     Sets up matplotlib for JPP plots
     using the pgf backend.
@@ -84,7 +84,10 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, fig
     mpl.rc('font', **font)
     mpl.rc('text', usetex=True)
     mpl.rc("pgf", texsystem="pdflatex")
-    mpl.rc("pgf", preamble=r"\usepackage{amsmath}\usepackage{newtxtext}\usepackage{newtxmath}")
+    if times_font:
+        mpl.rc("pgf", preamble=r"\usepackage{amsmath}\usepackage{newtxtext}\usepackage{newtxmath}")
+    else:
+        mpl.rc("pgf", preamble=r"\usepackage{amsmath}")
     mpl.rc('savefig', dpi=dpi)
     mpl.rc('figure', dpi=dpi)
     cprint("LaTeX set up for JPP with the pgf backend.", "yellow", attrs=["bold"])
