@@ -36,7 +36,7 @@ def save_pdf():
     plt.savefig(get_pgf_pdf_location())
 
 
-def setup_generic_plots(fontsize=18, dpi=300):
+def setup_generic_plots(fontsize=18):
     """
     Sets up matplotlib for LaTeX-enabled plots.
     """
@@ -52,10 +52,11 @@ def setup_generic_plots(fontsize=18, dpi=300):
     mpl.rc('font', **font)
     mpl.rc('text', usetex=True)
     mpl.rc("text.latex", preamble=r"\usepackage{amsmath}")
-    mpl.rc('savefig', dpi=dpi)
-    mpl.rc('figure', dpi=dpi)
+    mpl.rc('savefig', dpi=300)
+    mpl.rc('figure', dpi=100)
     cprint("LaTeX set up for generic single-page style, CM font.", "yellow", attrs=["bold"])
     cprint(f"Font size {fontsize} gives 9pt at scale = {9.0/fontsize}", "yellow", attrs=["bold"])
+
 
 
 def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(5, 3), layout=None):
