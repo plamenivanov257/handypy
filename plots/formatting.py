@@ -59,7 +59,7 @@ def setup_generic_plots(fontsize=18):
 
 
 
-def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, figsize=(5, 3), layout=None, times_font=True):
+def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, linewidth=0.8, figsize=(5, 3), layout=None, times_font=True):
     """
     Sets up matplotlib for JPP plots
     using the pgf backend.
@@ -73,6 +73,8 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, fig
     mpl.rcParams["axes.titlesize"] = fontsize
     mpl.rcParams["figure.labelsize"] = fontsize
     mpl.rcParams["axes.labelsize"] = fontsize
+
+    mpl.rcParams["lines.linewidth"] = linewidth
 
     mpl.rcParams["axes.linewidth"] = majorwidth
     mpl.rcParams["xtick.major.width"] = majorwidth

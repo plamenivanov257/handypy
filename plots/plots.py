@@ -146,8 +146,7 @@ def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=10
 
         cf = ax.contourf(plot_xrange, plot_yrange, np.transpose(plot_data[:, :]), levels=levels, cmap=cmap)
         if rasterized:
-            for c in cf.collections:
-                c.set_rasterized(True)
+            cf.set_rasterized(True)
         return cf
     except Exception as ex:
         cprint("Couldn't plot!", "red")
