@@ -124,7 +124,7 @@ def clean_pgf_fontsize(filename):
     cprint(f"Cleaned {filename}.", "yellow", attrs=["bold"])
 
 
-def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2.5, yoffset=0.5):
+def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1):
     """
     Used for subplot annotation
 
