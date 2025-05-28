@@ -85,8 +85,13 @@ def cli_input(message : str = "Gimme some input:", dtype=None, default=None, par
 
     success = False
 
+    if default is None:
+        default_str = ""
+    else:
+        default_str = f" (default is {default}) "
+
     while not success:
-        user_input = input(f"{message} (default is {default}) ")
+        user_input = input(f"{message}{default_str}")
 
         if len(user_input) == 0:
             # Empty input is okay only if default is specified.
