@@ -8,32 +8,34 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.transforms import ScaledTranslation
 
-PGF_PDF_LOCATION = "PGF_PDF_LOCATION"
+PGF_PDF_PATH = "PGF_PDF_PATH"
 
 
-def get_pgf_pdf_location():
+def get_pgf_pdf_path(short_filename : str):
     """
     When using pgf, we can save to a pdf somewhere
     to see what the pgf actually contains.
+    This returns the full path to a file.
     """
-    if PGF_PDF_LOCATION in os.environ:
-        return os.environ[PGF_PDF_LOCATION]
 
-    # otherwise, return generic file in home
+    if PGF_PDF_PATH in os.environ:
+        return os.path.join(f"{os.environ[PGF_PDF_PATH]}", short_filename)
+
+    # otherwise, return home
     if os.name == "posix":
-        return f"{os.environ['HOME']}/temp.pdf"
+        return os.path.join(f"{os.environ['HOME']}", short_filename)
 
     if os.name == "nt":
-        return f"{os.environ['HOMEDRIVE']}{os.environ['HOMEPATH']}\\temp.pdf"
+        return os.path.join(f"{os.environ['HOMEDRIVE']}{os.environ['HOMEPATH']}", short_filename)
 
-    raise Exception("No clue where to save temp.pdf!")
+    raise Exception("No clue how to figure out the PGF_PDF path!")
 
 
-def save_pdf():
+def save_pdf(short_filename="temp.pdf"):
     """
     Saves a debug pdf when using pgf.
     """
-    plt.savefig(get_pgf_pdf_location())
+    plt.savefig(get_pgf_pdf_path(short_filename))
 
 
 def setup_generic_plots(fontsize=18):
@@ -98,10 +100,12 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, lin
     return plt.figure(figsize=figsize, layout=layout)
 
 
-def save_pgf(filename, clean_fontsize=True):
+def save_pgf(short_filename, clean_fontsize=True):
     """
     Saves a pgf and optionally clean fontsize calls inside it.
     """
+    filename = get_pgf_pdf_path(short_filename)
+
     plt.savefig(filename)
     cprint(f"Saved {filename}.", "yellow")
 
