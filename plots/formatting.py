@@ -8,18 +8,16 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.transforms import ScaledTranslation
 
-PGF_PDF_PATH = "PGF_PDF_PATH"
+FIGURES_PATH = "FIGURES_PATH"
 
 
-def get_pgf_pdf_path(short_filename : str):
+def get_figures_path(short_filename : str):
     """
-    When using pgf, we can save to a pdf somewhere
-    to see what the pgf actually contains.
-    This returns the full path to a file.
+    This returns the full path to a figure to be saved.
     """
 
-    if PGF_PDF_PATH in os.environ:
-        return os.path.join(f"{os.environ[PGF_PDF_PATH]}", short_filename)
+    if FIGURES_PATH in os.environ:
+        return os.path.join(f"{os.environ[FIGURES_PATH]}", short_filename)
 
     # otherwise, return home
     if os.name == "posix":
@@ -28,14 +26,16 @@ def get_pgf_pdf_path(short_filename : str):
     if os.name == "nt":
         return os.path.join(f"{os.environ['HOMEDRIVE']}{os.environ['HOMEPATH']}", short_filename)
 
-    raise Exception("No clue how to figure out the PGF_PDF path!")
+    raise Exception("No clue how to figure out the FIGURES_PATH!")
 
 
 def save_pdf(short_filename="temp.pdf"):
     """
-    Saves a debug pdf when using pgf.
+    Saves a pdf
     """
-    plt.savefig(get_pgf_pdf_path(short_filename))
+    filename = get_figures_path(short_filename)
+    cprint(f"Saving to {filename}.", color="yellow")
+    plt.savefig(filename)
 
 
 def setup_generic_plots(fontsize=18):
@@ -58,7 +58,6 @@ def setup_generic_plots(fontsize=18):
     mpl.rc('figure', dpi=100)
     cprint("LaTeX set up for generic single-page style, CM font.", "yellow", attrs=["bold"])
     cprint(f"Font size {fontsize} gives 9pt at scale = {9.0/fontsize}", "yellow", attrs=["bold"])
-
 
 
 def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, linewidth=0.8, figsize=(5, 3), layout=None, times_font=True):
@@ -100,11 +99,51 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, lin
     return plt.figure(figsize=figsize, layout=layout)
 
 
+def setup_aps_pdf_plots(fontsize=8, dpi=600, majorwidth=0.6, minorwidth=0.5, linewidth=0.8, figsize=(3.4, 2.1), layout=None):
+    """
+    Sets up matplotlib for APS plots
+    using the pdf backend.
+    """
+    font = {'family' : 'serif',
+            'weight' : 'normal',
+            'size'   : fontsize}
+
+    mpl.use("pdf")
+    mpl.rcParams["axes.titlesize"] = fontsize
+    mpl.rcParams["axes.labelsize"] = fontsize
+    mpl.rcParams["figure.titlesize"] = fontsize
+    mpl.rcParams["figure.labelsize"] = fontsize
+
+    # Slighly smaller ticks to save space
+    mpl.rcParams["xtick.labelsize"] = fontsize - 1
+    mpl.rcParams["ytick.labelsize"] = fontsize - 1
+    mpl.rcParams["legend.fontsize"] = fontsize - 1
+
+
+    mpl.rcParams["lines.linewidth"] = linewidth
+
+    mpl.rcParams["axes.linewidth"] = majorwidth
+    mpl.rcParams["xtick.major.width"] = majorwidth
+    mpl.rcParams["ytick.major.width"] = majorwidth
+
+    mpl.rcParams["xtick.minor.width"] = minorwidth
+    mpl.rcParams["ytick.minor.width"] = minorwidth
+
+    mpl.rc('font', **font)
+    mpl.rc('text', usetex=True)
+    mpl.rc('text.latex', preamble=r"\usepackage{amsmath}\usepackage{amssymb}")
+    mpl.rc('savefig', dpi=dpi)
+    mpl.rc('figure', dpi=dpi)
+    cprint("LaTeX set up for APS with the PDF backend.", "yellow", attrs=["bold"])
+    cprint(f"Font size is {fontsize}", "yellow", attrs=["bold"])
+
+    return plt.figure(figsize=figsize, layout=layout)
+
 def save_pgf(short_filename, clean_fontsize=True):
     """
     Saves a pgf and optionally clean fontsize calls inside it.
     """
-    filename = get_pgf_pdf_path(short_filename)
+    filename = get_figures_path(short_filename)
 
     plt.savefig(filename)
     cprint(f"Saved {filename}.", "yellow")
