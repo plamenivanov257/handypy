@@ -137,14 +137,14 @@ def Hcomplex(z):  # computes the hue corresponding to the complex number z
     return np.mod(H, 1)
 
 
-def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=100, levels=None, cmap='seismic', rasterized=True):
+def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=100, levels=None, cmap='seismic', rasterized=True, **kwargs):
     try:
         if levels is None:
             plot_data_maxabs = np.nanmax(np.abs(plot_data))
             print("Plot data in range ", np.nanmin(plot_data), " to ", np.nanmax(plot_data))
             levels = np.linspace(-plot_data_maxabs, plot_data_maxabs, n_levels)
 
-        cf = ax.contourf(plot_xrange, plot_yrange, np.transpose(plot_data[:, :]), levels=levels, cmap=cmap)
+        cf = ax.contourf(plot_xrange, plot_yrange, np.transpose(plot_data[:, :]), levels=levels, cmap=cmap, **kwargs)
         if rasterized:
             cf.set_rasterized(True)
         return cf

@@ -29,13 +29,20 @@ def get_figures_path(short_filename : str):
     raise Exception("No clue how to figure out the FIGURES_PATH!")
 
 
-def save_pdf(short_filename="temp.pdf"):
+def save_pdf(short_filename=None, default_filename="temp.pdf"):
     """
     Saves a pdf
     """
-    filename = get_figures_path(short_filename)
-    cprint(f"Saving to {filename}.", color="yellow")
-    plt.savefig(filename)
+
+    if short_filename is not None:
+        filename = get_figures_path(short_filename)
+        cprint(f"Saving to {filename}.", color="yellow")
+        plt.savefig(filename)
+
+    if default_filename is not None:
+        filename = get_figures_path(default_filename)
+        cprint(f"Saving to {filename}.", color="yellow")
+        plt.savefig(filename)
 
 
 def setup_generic_plots(fontsize=18):
@@ -167,7 +174,7 @@ def clean_pgf_fontsize(filename):
     cprint(f"Cleaned {filename}.", "yellow", attrs=["bold"])
 
 
-def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1):
+def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1, **kwargs):
     """
     Used for subplot annotation
 
@@ -178,6 +185,7 @@ def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1):
         loc: Location. Must be one of "upper left", "upper right", "lower left", "lower right".
         xoffset: Additional horizontal offset. Given in units of mpl.rcParams["font.size"].
         yoffset: Additional vertical offset. Given in units of mpl.rcParams["font.size"].
+        **kwargs: All other names arguments are passed to pyplot's Axes.text function.
     """
 
     # Parse location
@@ -201,8 +209,12 @@ def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1):
     else:
         raise invalid_loc_exception
 
-    xoffset *= mpl.rcParams["font.size"]
-    yoffset *= mpl.rcParams["font.size"]
+    if "fontsize" not in kwargs:
+        fontsize = mpl.rcParams["font.size"]
+    else: fontsize = kwargs["fontsize"]
+
+    xoffset *= fontsize
+    yoffset *= fontsize
 
     ax.text(x, y, label,
-            transform=ax.transAxes + ScaledTranslation(xoffset/72, yoffset/72, fig.dpi_scale_trans))
+            transform=ax.transAxes + ScaledTranslation(xoffset/72, yoffset/72, fig.dpi_scale_trans), **kwargs)
