@@ -2,6 +2,8 @@
 Defines cli_input which is a fancy terminal string parser.
 """
 from termcolor import cprint
+import numpy as np
+
 
 
 def cli_input(message : str = "Gimme some input:", dtype=None, default=None, parser=None):
@@ -108,3 +110,40 @@ def cli_input(message : str = "Gimme some input:", dtype=None, default=None, par
     cprint("Chose", "green", end=" ")
     cprint(f"{value}", "green", attrs=["bold"])
     return value
+
+def select_interval(name: str, sorted_range: np.array, dtype=float):
+    """
+    Selects the start and the end of an interval contained within a sorted range.
+    """
+
+    # just in case
+    sorted_range = np.asarray(sorted_range)
+
+    range_min = sorted_range[0]
+    range_max = sorted_range[-1]
+
+    print(f"Selecting {name} in range [{range_min}, {range_max}].")
+    def in_range(value: dtype):
+        value = dtype(value)
+        
+        if value < range_min:
+            cprint(f"Must be at least {range_min}!")
+            return False, value
+
+        if value > range_max:
+            cprint(f"Must be at most {range_max}!")
+            return False, value
+
+        return True, value
+
+
+    start = cli_input("Start = ", dtype=dtype, parser=in_range, default=range_min)
+    end = cli_input("End = ", dtype=dtype, parser=in_range, default=range_max)
+
+    index_start = np.argwhere(sorted_range >= start)[0][0]
+    index_end = np.argwhere(sorted_range <= end)[-1][0]
+
+    start = sorted_range[index_start]
+    end = sorted_range[index_end]
+
+    return index_start, index_end, start, end
