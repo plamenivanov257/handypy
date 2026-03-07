@@ -136,6 +136,21 @@ def Hcomplex(z):  # computes the hue corresponding to the complex number z
     H = np.angle(z) / (2*np.pi) + 1
     return np.mod(H, 1)
 
+def contourf_plot_positive(ax, plot_xrange, plot_yrange, plot_data, n_levels=100, levels=None, cmap='Reds', rasterized=True, **kwargs):
+    try:
+        if levels is None:
+            plot_data_max = np.nanmax(plot_data)
+            print("Plot data in range ", 0, " to ", plot_data_max)
+            levels = np.linspace(0, plot_data_max, n_levels)
+
+        cf = ax.contourf(plot_xrange, plot_yrange, np.transpose(plot_data[:, :]), levels=levels, cmap=cmap, **kwargs)
+        if rasterized:
+            cf.set_rasterized(True)
+        return cf
+    except Exception as ex:
+        cprint("Couldn't plot!", "red")
+        cprint(ex, "red")
+        return None
 
 def contourf_plot_diverging(ax, plot_xrange, plot_yrange, plot_data, n_levels=100, levels=None, cmap='seismic', rasterized=True, **kwargs):
     try:
