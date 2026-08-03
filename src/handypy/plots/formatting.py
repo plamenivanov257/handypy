@@ -45,7 +45,7 @@ def save_pdf(short_filename=None, default_filename="temp.pdf"):
         plt.savefig(filename)
 
 
-def setup_generic_plots(fontsize=18):
+def setup_generic_plots(fontsize=18, usetex=True):
     """
     Sets up matplotlib for LaTeX-enabled plots.
     """
@@ -59,7 +59,7 @@ def setup_generic_plots(fontsize=18):
     mpl.rcParams["figure.labelsize"] = fontsize
     mpl.rcParams["axes.labelsize"] = fontsize
     mpl.rc('font', **font)
-    mpl.rc('text', usetex=True)
+    mpl.rc('text', usetex=usetex)
     mpl.rc("text.latex", preamble=r"\usepackage{amsmath}")
     mpl.rc('savefig', dpi=300)
     mpl.rc('figure', dpi=100)
