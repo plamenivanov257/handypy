@@ -6,7 +6,9 @@ import re
 from termcolor import cprint
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.transforms import ScaledTranslation
+from ..cli.cli_input import cli_input
 
 FIGURES_PATH = "FIGURES_PATH"
 
@@ -106,7 +108,7 @@ def setup_jpp_pgf_plots(fontsize=9, dpi=600, majorwidth=0.6, minorwidth=0.5, lin
     return plt.figure(figsize=figsize, layout=layout)
 
 
-def setup_aps_pdf_plots(fontsize=8, dpi=600, majorwidth=0.6, minorwidth=0.5, linewidth=0.8, figsize=(3.4, 2.1), layout=None):
+def setup_aps_pgf_plots(fontsize=8, dpi=600, majorwidth=0.6, minorwidth=0.5, linewidth=0.8, figsize=(3.4, 2.1), layout=None):
     """
     Sets up matplotlib for APS plots
     using the pdf backend.
@@ -115,7 +117,7 @@ def setup_aps_pdf_plots(fontsize=8, dpi=600, majorwidth=0.6, minorwidth=0.5, lin
             'weight' : 'normal',
             'size'   : fontsize}
 
-    mpl.use("pdf")
+    mpl.use("pgf")
     mpl.rcParams["axes.titlesize"] = fontsize
     mpl.rcParams["axes.labelsize"] = fontsize
     mpl.rcParams["figure.titlesize"] = fontsize
@@ -138,7 +140,9 @@ def setup_aps_pdf_plots(fontsize=8, dpi=600, majorwidth=0.6, minorwidth=0.5, lin
 
     mpl.rc('font', **font)
     mpl.rc('text', usetex=True)
+    mpl.rc("pgf", texsystem="pdflatex")
     mpl.rc('text.latex', preamble=r"\usepackage{amsmath}\usepackage{amssymb}")
+    mpl.rc('pgf', preamble=r"\usepackage{amsmath}\usepackage{amssymb}")
     mpl.rc('savefig', dpi=dpi)
     mpl.rc('figure', dpi=dpi)
     cprint("LaTeX set up for APS with the PDF backend.", "yellow", attrs=["bold"])
@@ -218,3 +222,31 @@ def annotate_axes(fig, ax, label, loc="upper left", xoffset=-2, yoffset=1, **kwa
 
     ax.text(x, y, label,
             transform=ax.transAxes + ScaledTranslation(xoffset/72, yoffset/72, fig.dpi_scale_trans), **kwargs)
+
+def adjust_axes_properties_cli(ax, ax_name):
+    print(f"Adjusting properties of axes {ax_name}")
+    
+    # Axes scale
+    print(f"Current axes (x, y) scale is ({ax.get_xscale()}, {ax.get_yscale})")
+    ax.set_xscale(cli_input("x scale = ", dtype=str, default=ax.get_xscale()))
+    ax.set_yscale(cli_input("y scale = ", dtype=str, default=ax.get_yscale()))
+
+    # x lim
+    lim = np.zeros(2)
+    lim[:] = ax.get_xlim()[:]
+
+    print(f"xlim is {lim}")
+    lim[0] = cli_input("xlim left = ", dtype=str, default=lim[0])
+    lim[1] = cli_input("xlim right = ", dtype=str, default=lim[1])
+
+    ax.set_xlim(lim)
+    
+    # y lim
+    lim = np.zeros(2)
+    lim[:] = ax.get_ylim()[:]
+
+    print(f"ylim is {lim}")
+    lim[0] = cli_input("ylim left = ", dtype=str, default=lim[0])
+    lim[1] = cli_input("ylim right = ", dtype=str, default=lim[1])
+
+    ax.set_ylim(lim)
